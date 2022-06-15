@@ -1,4 +1,3 @@
-import com.codeborne.selenide.ElementsCollection;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.time.Duration;
@@ -12,15 +11,17 @@ public class TravelShopTest {
 
     @Test
     void shouldBuy() {
-        open ("http://localhost:8080");
-        $(withText("Купить")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
+
+
         $("div").find(withText("Ошибка")).shouldNot(appear);
         $("div").find(withText("Успешно")).shouldBe(visible, Duration.ofSeconds(15));
 
@@ -31,15 +32,15 @@ public class TravelShopTest {
 
     @Test
     void shouldBuyCredit() {
-        open ("http://localhost:8080");
-        $(withText("Купить в кредит")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyInCreditButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("div").find(withText("Ошибка")).shouldNot(appear);
         $("div").find(withText("Успешно")).shouldBe(visible, Duration.ofSeconds(15));
 
@@ -49,15 +50,15 @@ public class TravelShopTest {
 
     @Test
     void shouldNotBuyByDeclinedCard() {
-        open ("http://localhost:8080");
-        $(withText("Купить")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberDeclined());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberDeclined());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("div").find(withText("Ошибка")).shouldBe(visible, Duration.ofSeconds(15));
 
         DBTester dbTester = new DBTester();
@@ -68,239 +69,239 @@ public class TravelShopTest {
 
     @Test
     void shouldNotBuyMonthInPast() {
-        open ("http://localhost:8080");
-        $(withText("Купить")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getMonthFromPast());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(-1, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(0, "YY"));
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyUnrealMonth() {
-        open ("http://localhost:8080");
-        $(withText("Купить")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getUnrealMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.getUnrealMonth());
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyZeroMonth() {
-        open ("http://localhost:8080");
-        $(withText("Купить")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getZeroMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.getZeroMonth());
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyCleanFieldMonth() {
-        open ("http://localhost:8080");
-        $(withText("Купить")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getCleanFieldMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.getCleanFieldMonth());
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyYearInPast() {
-        open ("http://localhost:8080");
-        $(withText("Купить")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getYearInPast());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(-1, "YY"));
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyPlusSixYears() {
-        open ("http://localhost:8080");
-        $(withText("Купить")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getPlusSixYears());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(6, "YY"));
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
     @Test
     void shouldNotBuyYearZero() {
-        open ("http://localhost:8080");
-        $(withText("Купить")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getZeroYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.getZeroYear());
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyCleanFieldYear() {
-        open ("http://localhost:8080");
-        $(withText("Купить")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getCleanFieldYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.getCleanFieldYear());
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyCyrillicName() {
-        open ("http://localhost:8080");
-        $(withText("Купить")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getCyrillicName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getCyrillicName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyNameWithFigures() {
-        open ("http://localhost:8080");
-        $(withText("Купить")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getNameWithFigures());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getNameWithFigures());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyNameWithStops() {
-        open ("http://localhost:8080");
-        $(withText("Купить")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getNameWithStops());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getNameWithStops());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyCleanFieldName() {
-        open ("http://localhost:8080");
-        $(withText("Купить")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getCleanFieldName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getCleanFieldName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyCVVLessFigures() {
-        open ("http://localhost:8080");
-        $(withText("Купить")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getCVVLessFigures());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getCVVLessFigures());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyCleanFieldCVV() {
-        open ("http://localhost:8080");
-        $(withText("Купить")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getCleanFieldCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getCleanFieldCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyCVVZero() {
-        open ("http://localhost:8080");
-        $(withText("Купить")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getCVVZero());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getCVVZero());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyByCardNotFromList() {
-        open ("http://localhost:8080");
-        $(withText("Купить")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberNotFromList());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberNotFromList());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("div").find(withText("Успешно")).shouldNot(appear);
         $("div").find(withText("Ошибка")).shouldBe(visible, Duration.ofSeconds(15));
     }
 
     @Test
     void shouldNotBuyCreditByDeclinedCard() {
-        open ("http://localhost:8080");
-        $(withText("Купить в кредит")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberDeclined());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyInCreditButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberDeclined());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("div").find(withText("Ошибка")).shouldBe(visible, Duration.ofSeconds(15));
 
         DBTester dbTester = new DBTester();
@@ -309,224 +310,224 @@ public class TravelShopTest {
 
     @Test
     void shouldNotBuyCreditMonthInPast() {
-        open ("http://localhost:8080");
-        $(withText("Купить в кредит")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getMonthFromPast());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyInCreditButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(-1, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(0, "YY"));
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyCreditUnrealMonth() {
-        open ("http://localhost:8080");
-        $(withText("Купить в кредит")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getUnrealMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyInCreditButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.getUnrealMonth());
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyCreditZeroMonth() {
-        open ("http://localhost:8080");
-        $(withText("Купить в кредит")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getZeroMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyInCreditButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.getZeroMonth());
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyCreditCleanFieldMonth() {
-        open ("http://localhost:8080");
-        $(withText("Купить в кредит")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getCleanFieldMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyInCreditButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.getCleanFieldMonth());
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyCreditYearInPast() {
-        open ("http://localhost:8080");
-        $(withText("Купить в кредит")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getYearInPast());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyInCreditButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(-1, "YY"));
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyCreditPlusSixYears() {
-        open ("http://localhost:8080");
-        $(withText("Купить в кредит")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getPlusSixYears());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyInCreditButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(6, "YY"));
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
     @Test
     void shouldNotBuyCreditYearZero() {
-        open ("http://localhost:8080");
-        $(withText("Купить в кредит")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getZeroYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyInCreditButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.getZeroYear());
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyCreditCleanFieldYear() {
-        open ("http://localhost:8080");
-        $(withText("Купить в кредит")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getCleanFieldYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyInCreditButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.getCleanFieldYear());
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyCreditCyrillicName() {
-        open ("http://localhost:8080");
-        $(withText("Купить в кредит")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getCyrillicName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyInCreditButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getCyrillicName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyCreditNameWithFigures() {
-        open ("http://localhost:8080");
-        $(withText("Купить в кредит")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getNameWithFigures());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyInCreditButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getNameWithFigures());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyCreditNameWithStops() {
-        open ("http://localhost:8080");
-        $(withText("Купить в кредит")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getNameWithStops());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyInCreditButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getNameWithStops());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyCreditCleanFieldName() {
-        open ("http://localhost:8080");
-        $(withText("Купить в кредит")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getCleanFieldName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyInCreditButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getCleanFieldName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyCreditCVVLessFigures() {
-        open ("http://localhost:8080");
-        $(withText("Купить в кредит")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getCVVLessFigures());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyInCreditButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getCVVLessFigures());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyCreditCleanFieldCVV() {
-        open ("http://localhost:8080");
-        $(withText("Купить в кредит")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getCleanFieldCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyInCreditButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getCleanFieldCVV());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyCreditCVVZero() {
-        open ("http://localhost:8080");
-        $(withText("Купить в кредит")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberApproved());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getCVVZero());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyInCreditButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberApproved());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getCVVZero());
+        transferPage.clickContinueButton();
         $("[class='input__sub']").shouldBe(visible);
     }
 
     @Test
     void shouldNotBuyCreditByCardNotFromList() {
-        open ("http://localhost:8080");
-        $(withText("Купить в кредит")).click();
-        $("[placeholder='0000 0000 0000 0000']").setValue(DataGenerator.getCardNumberNotFromList());
-        $("[placeholder='08']").setValue(DataGenerator.getRightMonth());
-        $("[placeholder='22']").setValue(DataGenerator.getRightYear());
-        ElementsCollection TextField = $$("[class='input__box'] input[class='input__control']");
-        TextField.get(3).setValue(DataGenerator.getRightName());
-        $("[placeholder='999']").setValue(DataGenerator.getRightCVV());
-        $$("button").find(exactText("Продолжить")).click();
+        TransferPage transferPage = new TransferPage();
+        transferPage.openTransferPage("http://localhost:8080");
+        transferPage.clickBuyInCreditButton();
+        transferPage.fillCardNumber(DataGenerator.getCardNumberNotFromList());
+        transferPage.fillMonthField(DataGenerator.generateMonth(2, "MM"));
+        transferPage.fillYearField(DataGenerator.generateYear(1, "YY"));
+        transferPage.fillNameField(DataGenerator.getRightName());
+        transferPage.fillCVVField(DataGenerator.getRightCVV());
+        transferPage.clickContinueButton();
         $("div").find(withText("Успешно")).shouldNot(appear);
         $("div").find(withText("Ошибка")).shouldBe(visible, Duration.ofSeconds(15));
     }

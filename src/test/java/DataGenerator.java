@@ -1,3 +1,9 @@
+import com.github.javafaker.Faker;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 public class DataGenerator {
 
     public static String getCardNumberApproved() {
@@ -10,18 +16,14 @@ public class DataGenerator {
     }
 
     public static String getCardNumberNotFromList() {
-
-        return "1234 1234 1234 1234";
+        Faker faker;
+        faker = new Faker();
+        String cardNumber = faker.numerify("#### #### #### ####");
+        return cardNumber;
     }
 
-    public static String getRightMonth() {
-
-        return "08";
-    }
-
-    public static String getMonthFromPast() {
-
-        return "04";
+    public static String generateMonth(int months, String formatPattern) {
+        return LocalDate.now().plusMonths(months).format(DateTimeFormatter.ofPattern(formatPattern));
     }
 
     public static String getUnrealMonth() {
@@ -38,18 +40,8 @@ public class DataGenerator {
         return "";
     }
 
-    public static String getRightYear() {
-
-        return "22";
-    }
-    public static String getYearInPast() {
-
-        return "21";
-    }
-
-    public static String getPlusSixYears() {
-
-        return "28";
+    public static String generateYear(int years, String formatPattern) {
+        return LocalDate.now().plusYears(years).format(DateTimeFormatter.ofPattern(formatPattern));
     }
 
     public static String getZeroYear() {
@@ -63,12 +55,16 @@ public class DataGenerator {
     }
 
     public static String getRightName() {
-
-        return "Ivanov Ivan";
+        Faker faker;
+        faker = new Faker (new Locale("en"));
+        String name = faker.name().fullName();
+        return name;
     }
     public static String getCyrillicName() {
-
-        return "Иванов Иван";
+        Faker faker;
+        faker = new Faker (new Locale("ru"));
+        String name = faker.name().fullName();
+        return name;
     }
 
     public static String getNameWithFigures() {
@@ -86,8 +82,10 @@ public class DataGenerator {
     }
 
     public static String getRightCVV() {
-
-        return "999";
+        Faker faker;
+        faker = new Faker ();
+        String CVV = String.valueOf(faker.random());
+        return CVV;
     }
     public static String getCVVLessFigures() {
 

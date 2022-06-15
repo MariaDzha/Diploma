@@ -1,7 +1,24 @@
 # Запуск автотестов:
 1. Склонировать репозиторий Diploma
-2. Установить Node.js
-3. Запустить через командую строку gate-simulator комадой npm start
-4. Запустить БД в терминале командой docker pull postgres
-5. Запустить в IDEA приложение aqa-shop.jar
-6. Запустить в IDEA public class TravelShopTest
+2. Запустить контейнер с двумя базами данных и симулятором банковских сервисов командой:
+   docker-compose up
+3. Запустить приложение командами:
+   - для Mysql
+
+    java "-Dspring.datasource.url=jdbc:mysql://localhost:3306/app" "-Dspring.datasource.username=app" "-Dspring.datasource.password=pass" -jar artifacts/aqa-shop.jar
+   
+   - для Postgresql
+
+  java "-Dspring.datasource.url=jdbc:postgresql://localhost:5432/app" "-Dspring.datasource.username=postgres" "-Dspring.datasource.password=postgres" -jar artifacts/aqa-shop.jar
+
+4. Запустить тесты командами:
+- для Mysql
+
+    gradlew clean test allureReport -Ddb.url=jdbc:mysql://localhost:3306/app -Ddb.user=app -Ddb.password=pass
+
+- для Postgresql
+
+    gradlew clean test allureReport -Ddb.url=jdbc:postgresql://localhost:5432/app -Ddb.user=postgres -Ddb.password=postgres
+
+5. Сформировать отчет командой:
+gradlew allureServe
