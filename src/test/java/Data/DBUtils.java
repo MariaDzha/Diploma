@@ -1,9 +1,12 @@
+package Data;
+
 import java.sql.*;
 
-public class DBTester {
+public class DBUtils {
+    private DBUtils() {
+    }
 
-
-    public String getLastStatusCredit() {
+    public static String getLastStatusCredit() {
         String dbUrl = System.getProperty("db.url");
         String dbUser = System.getProperty("db.user");
         String dbPassword = System.getProperty("db.password");
@@ -12,7 +15,6 @@ public class DBTester {
         var creditRequestSQL = "SELECT id, bank_id, created, status FROM credit_request_entity WHERE bank_id = ? ORDER BY created DESC LIMIT 1";
 
         try (
-                //Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/app", "postgres", "postgres");
                 Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
         ) {
             PreparedStatement dataOrder = conn.prepareStatement(orderSQL);
@@ -34,7 +36,7 @@ public class DBTester {
         return status;
     }
 
-    public String getLastStatus() {
+    public static String getLastStatus() {
         String dbUrl = System.getProperty("db.url");
         String dbUser = System.getProperty("db.user");
         String dbPassword = System.getProperty("db.password");
@@ -63,7 +65,7 @@ public class DBTester {
         return status;
     }
 
-    public int getLastAmount () {
+    public static int getLastAmount () {
         String dbUrl = System.getProperty("db.url");
         String dbUser = System.getProperty("db.user");
         String dbPassword = System.getProperty("db.password");
