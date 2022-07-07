@@ -22,3 +22,7 @@ java "-Dspring.datasource.url=jdbc:postgresql://localhost:5432/app" "-Dspring.da
 
 5. Сформировать отчет командой:
 gradlew allureServe
+
+Отчет по результатам тестирования: [documentation/Report.md](https://github.com/MariaDzha/Diploma/blob/master/documentation/Report.md)
+
+Отчет по результатам автоматизации: https://github.com/MariaDzha/Diploma/blob/master/documentation/Summary.md
