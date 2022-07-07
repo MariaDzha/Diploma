@@ -9,7 +9,7 @@
    
    - для Postgresql
 
-  java "-Dspring.datasource.url=jdbc:postgresql://localhost:5432/app" "-Dspring.datasource.username=postgres" "-Dspring.datasource.password=postgres" -jar artifacts/aqa-shop.jar
+java "-Dspring.datasource.url=jdbc:postgresql://localhost:5432/app" "-Dspring.datasource.username=app" "-Dspring.datasource.password=pass" -jar artifacts/aqa-shop.jar
 
 4. Запустить тесты командами:
 - для Mysql
@@ -18,7 +18,7 @@
 
 - для Postgresql
 
-    gradlew clean test allureReport -Ddb.url=jdbc:postgresql://localhost:5432/app -Ddb.user=postgres -Ddb.password=postgres
+    gradlew clean test allureReport -Ddb.url=jdbc:postgresql://localhost:5432/app -Ddb.user=app -Ddb.password=pass
 
 5. Сформировать отчет командой:
 gradlew allureServe

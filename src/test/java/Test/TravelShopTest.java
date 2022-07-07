@@ -1,9 +1,13 @@
 package Test;
 import Data.DBUtils;
 import Data.DataGenerator;
-import Page.CreditPage;
-import Page.PurchasePage;
-import Page.TransferPage;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import page.CreditPage;
+import page.PurchasePage;
+import page.TransferPage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import static com.codeborne.selenide.Selenide.*;
@@ -11,13 +15,22 @@ import static com.codeborne.selenide.Selenide.*;
 
 
 public class TravelShopTest {
+    @BeforeAll
+    static void SetUpAll(){
+        SelenideLogger.addListener("allure", new AllureSelenide());
+    }
+
+    @AfterAll
+    static void TearDownAll(){
+        SelenideLogger.removeListener("allure");
+    }
 
     @Test
     void shouldBuy() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        PurchasePage purchasePage = new PurchasePage();
         transferPage.clickBuyButton();
+        PurchasePage purchasePage = new PurchasePage();
         purchasePage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -37,8 +50,8 @@ public class TravelShopTest {
     void shouldBuyCredit() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        CreditPage creditPage = new CreditPage();
         transferPage.clickBuyInCreditButton();
+        CreditPage creditPage = new CreditPage();
         creditPage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -57,8 +70,8 @@ public class TravelShopTest {
     void shouldNotBuyByDeclinedCard() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        PurchasePage purchasePage = new PurchasePage();
         transferPage.clickBuyButton();
+        PurchasePage purchasePage = new PurchasePage();
         purchasePage.fillAllFields(
                 DataGenerator.getCardNumberDeclined(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -77,8 +90,8 @@ public class TravelShopTest {
     void shouldNotBuyMonthInPast() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        PurchasePage purchasePage = new PurchasePage();
         transferPage.clickBuyButton();
+        PurchasePage purchasePage = new PurchasePage();
         purchasePage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(-1, "MM"),
@@ -95,8 +108,8 @@ public class TravelShopTest {
     void shouldNotBuyUnrealMonth() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        PurchasePage purchasePage = new PurchasePage();
         transferPage.clickBuyButton();
+        PurchasePage purchasePage = new PurchasePage();
         purchasePage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.getUnrealMonth(),
@@ -112,8 +125,8 @@ public class TravelShopTest {
     void shouldNotBuyZeroMonth() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        PurchasePage purchasePage = new PurchasePage();
         transferPage.clickBuyButton();
+        PurchasePage purchasePage = new PurchasePage();
         purchasePage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.getZeroMonth(),
@@ -128,8 +141,8 @@ public class TravelShopTest {
     void shouldNotBuyCleanFieldMonth() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        PurchasePage purchasePage = new PurchasePage();
         transferPage.clickBuyButton();
+        PurchasePage purchasePage = new PurchasePage();
         purchasePage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.getCleanFieldMonth(),
@@ -146,8 +159,8 @@ public class TravelShopTest {
     void shouldNotBuyYearInPast() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        PurchasePage purchasePage = new PurchasePage();
         transferPage.clickBuyButton();
+        PurchasePage purchasePage = new PurchasePage();
         purchasePage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -162,8 +175,8 @@ public class TravelShopTest {
     void shouldNotBuyPlusSixYears() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        PurchasePage purchasePage = new PurchasePage();
         transferPage.clickBuyButton();
+        PurchasePage purchasePage = new PurchasePage();
         purchasePage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -178,8 +191,8 @@ public class TravelShopTest {
     void shouldNotBuyYearZero() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        PurchasePage purchasePage = new PurchasePage();
         transferPage.clickBuyButton();
+        PurchasePage purchasePage = new PurchasePage();
         purchasePage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -194,8 +207,8 @@ public class TravelShopTest {
     void shouldNotBuyCleanFieldYear() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        PurchasePage purchasePage = new PurchasePage();
         transferPage.clickBuyButton();
+        PurchasePage purchasePage = new PurchasePage();
         purchasePage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -210,8 +223,8 @@ public class TravelShopTest {
     void shouldNotBuyCyrillicName() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        PurchasePage purchasePage = new PurchasePage();
         transferPage.clickBuyButton();
+        PurchasePage purchasePage = new PurchasePage();
         purchasePage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -227,8 +240,8 @@ public class TravelShopTest {
     void shouldNotBuyNameWithFigures() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        PurchasePage purchasePage = new PurchasePage();
         transferPage.clickBuyButton();
+        PurchasePage purchasePage = new PurchasePage();
         purchasePage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -244,8 +257,8 @@ public class TravelShopTest {
     void shouldNotBuyNameWithStops() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        PurchasePage purchasePage = new PurchasePage();
         transferPage.clickBuyButton();
+        PurchasePage purchasePage = new PurchasePage();
         purchasePage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -260,8 +273,8 @@ public class TravelShopTest {
     void shouldNotBuyCleanFieldName() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        PurchasePage purchasePage = new PurchasePage();
         transferPage.clickBuyButton();
+        PurchasePage purchasePage = new PurchasePage();
         purchasePage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -276,8 +289,8 @@ public class TravelShopTest {
     void shouldNotBuyCVVLessFigures() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        PurchasePage purchasePage = new PurchasePage();
         transferPage.clickBuyButton();
+        PurchasePage purchasePage = new PurchasePage();
         purchasePage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -292,8 +305,8 @@ public class TravelShopTest {
     void shouldNotBuyCleanFieldCVV() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        PurchasePage purchasePage = new PurchasePage();
         transferPage.clickBuyButton();
+        PurchasePage purchasePage = new PurchasePage();
         purchasePage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -308,8 +321,8 @@ public class TravelShopTest {
     void shouldNotBuyCVVZero() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        PurchasePage purchasePage = new PurchasePage();
         transferPage.clickBuyButton();
+        PurchasePage purchasePage = new PurchasePage();
         purchasePage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -324,8 +337,8 @@ public class TravelShopTest {
     void shouldNotBuyByCardNotFromList() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        PurchasePage purchasePage = new PurchasePage();
         transferPage.clickBuyButton();
+        PurchasePage purchasePage = new PurchasePage();
         purchasePage.fillAllFields(
                 DataGenerator.getCardNumberNotFromList(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -342,8 +355,8 @@ public class TravelShopTest {
     void shouldNotBuyCreditByDeclinedCard() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        CreditPage creditPage =  new CreditPage();
         transferPage.clickBuyInCreditButton();
+        CreditPage creditPage =  new CreditPage();
         creditPage.fillAllFields(
                 DataGenerator.getCardNumberDeclined(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -359,8 +372,8 @@ public class TravelShopTest {
     void shouldNotBuyCreditMonthInPast() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        CreditPage creditPage =  new CreditPage();
         transferPage.clickBuyInCreditButton();
+        CreditPage creditPage =  new CreditPage();
         creditPage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(-1, "MM"),
@@ -375,8 +388,8 @@ public class TravelShopTest {
     void shouldNotBuyCreditUnrealMonth() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        CreditPage creditPage =  new CreditPage();
         transferPage.clickBuyInCreditButton();
+        CreditPage creditPage =  new CreditPage();
         creditPage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.getUnrealMonth(),
@@ -391,8 +404,8 @@ public class TravelShopTest {
     void shouldNotBuyCreditZeroMonth() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        CreditPage creditPage =  new CreditPage();
         transferPage.clickBuyInCreditButton();
+        CreditPage creditPage =  new CreditPage();
         creditPage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.getZeroMonth(),
@@ -407,8 +420,8 @@ public class TravelShopTest {
     void shouldNotBuyCreditCleanFieldMonth() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        CreditPage creditPage =  new CreditPage();
         transferPage.clickBuyInCreditButton();
+        CreditPage creditPage =  new CreditPage();
         creditPage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.getCleanFieldMonth(),
@@ -423,8 +436,8 @@ public class TravelShopTest {
     void shouldNotBuyCreditYearInPast() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        CreditPage creditPage =  new CreditPage();
         transferPage.clickBuyInCreditButton();
+        CreditPage creditPage =  new CreditPage();
         creditPage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -439,8 +452,8 @@ public class TravelShopTest {
     void shouldNotBuyCreditPlusSixYears() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        CreditPage creditPage =  new CreditPage();
         transferPage.clickBuyInCreditButton();
+        CreditPage creditPage =  new CreditPage();
         creditPage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -455,8 +468,8 @@ public class TravelShopTest {
     void shouldNotBuyCreditYearZero() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        CreditPage creditPage =  new CreditPage();
         transferPage.clickBuyInCreditButton();
+        CreditPage creditPage =  new CreditPage();
         creditPage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -472,8 +485,8 @@ public class TravelShopTest {
     void shouldNotBuyCreditCleanFieldYear() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        CreditPage creditPage =  new CreditPage();
         transferPage.clickBuyInCreditButton();
+        CreditPage creditPage =  new CreditPage();
         creditPage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -488,8 +501,8 @@ public class TravelShopTest {
     void shouldNotBuyCreditCyrillicName() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        CreditPage creditPage =  new CreditPage();
         transferPage.clickBuyInCreditButton();
+        CreditPage creditPage =  new CreditPage();
         creditPage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -504,8 +517,8 @@ public class TravelShopTest {
     void shouldNotBuyCreditNameWithFigures() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        CreditPage creditPage =  new CreditPage();
         transferPage.clickBuyInCreditButton();
+        CreditPage creditPage =  new CreditPage();
         creditPage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -520,8 +533,8 @@ public class TravelShopTest {
     void shouldNotBuyCreditNameWithStops() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        CreditPage creditPage =  new CreditPage();
         transferPage.clickBuyInCreditButton();
+        CreditPage creditPage =  new CreditPage();
         creditPage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -536,8 +549,8 @@ public class TravelShopTest {
     void shouldNotBuyCreditCleanFieldName() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        CreditPage creditPage =  new CreditPage();
         transferPage.clickBuyInCreditButton();
+        CreditPage creditPage =  new CreditPage();
         creditPage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -552,8 +565,8 @@ public class TravelShopTest {
     void shouldNotBuyCreditCVVLessFigures() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        CreditPage creditPage =  new CreditPage();
         transferPage.clickBuyInCreditButton();
+        CreditPage creditPage =  new CreditPage();
         creditPage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -568,8 +581,8 @@ public class TravelShopTest {
     void shouldNotBuyCreditCleanFieldCVV() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        CreditPage creditPage =  new CreditPage();
         transferPage.clickBuyInCreditButton();
+        CreditPage creditPage =  new CreditPage();
         creditPage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -584,8 +597,8 @@ public class TravelShopTest {
     void shouldNotBuyCreditCVVZero() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        CreditPage creditPage =  new CreditPage();
         transferPage.clickBuyInCreditButton();
+        CreditPage creditPage =  new CreditPage();
         creditPage.fillAllFields(
                 DataGenerator.getCardNumberApproved(),
                 DataGenerator.generateMonth(2, "MM"),
@@ -600,8 +613,8 @@ public class TravelShopTest {
     void shouldNotBuyCreditByCardNotFromList() {
         open("http://localhost:8080");
         TransferPage transferPage = new TransferPage();
-        CreditPage creditPage =  new CreditPage();
         transferPage.clickBuyInCreditButton();
+        CreditPage creditPage =  new CreditPage();
         creditPage.fillAllFields(
                 DataGenerator.getCardNumberNotFromList(),
                 DataGenerator.generateMonth(2, "MM"),
