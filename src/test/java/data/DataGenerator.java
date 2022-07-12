@@ -1,4 +1,4 @@
-package Data;
+package data;
 
 import com.github.javafaker.Faker;
 
@@ -86,7 +86,7 @@ public class DataGenerator {
     public static String getRightCVV() {
         Faker faker;
         faker = new Faker ();
-        String CVV = String.valueOf(faker.random());
+        String CVV = String.valueOf(faker.random().nextInt(100, 999));
         return CVV;
     }
     public static String getCVVLessFigures() {

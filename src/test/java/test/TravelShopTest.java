@@ -1,6 +1,6 @@
-package Test;
-import Data.DBUtils;
-import Data.DataGenerator;
+package test;
+import data.DBUtils;
+import data.DataGenerator;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterAll;
@@ -494,7 +494,7 @@ public class TravelShopTest {
                 DataGenerator.getRightName(),
                 DataGenerator.getRightCVV());
         creditPage.clickContinueButton();
-        creditPage.shouldShowWrongCardTermText();
+        creditPage.shouldShowWrongFormatText();
     }
 
     @Test
